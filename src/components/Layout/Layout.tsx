@@ -5,7 +5,7 @@ const Layout = ({ children }: any) => {
   return (
     <Fragment>
       <Navbar />
-      <div>{children}</div>
+      <div className="my-8 mx-6">{children}</div>
     </Fragment>
   );
 };
