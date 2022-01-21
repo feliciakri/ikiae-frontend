@@ -1,10 +1,10 @@
-import Navbar from "./components/Layout/Navbar/Navbar";
+import Router from "./routes/index";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-    </div>
+    <>
+      <Router />
+    </>
   );
 }
 
