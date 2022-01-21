@@ -1,13 +1,13 @@
 import axios from "axios";
 import Layout from "../../components/Layout/Layout";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import dataIcons from "../../components/assets/icons/icons";
 import CardProduct from "../../components/Card/CardProduct";
-const Homepage = () => {
+const Homepage: React.FC = () => {
   const [isProducts, setIsProducts] = useState<Array<any>>();
   useEffect(() => {
     axios
-      .get("https://fakestoreapi.com/products")
+      .get(`${process.env.REACT_APP_API_KEY}`)
       .then((response) => setIsProducts(response.data));
   }, []);
 
@@ -21,8 +21,8 @@ const Homepage = () => {
         </div>
         <div className="w-2/3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {isProducts?.map((product) => {
-              return <CardProduct product={product} />;
+            {isProducts?.map((product, i) => {
+              return <CardProduct key={i} product={product} />;
             })}
           </div>
         </div>
