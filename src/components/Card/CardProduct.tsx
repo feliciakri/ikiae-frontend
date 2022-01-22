@@ -10,7 +10,7 @@ const CardProduct = ({ product }: any) => {
       />
       <div className="relative px-4 font-inter">
         {/* Link to product detail */}
-        <Link to="/slug">
+        <Link to={`/product/${product.id}`}>
           <h3 className="font-semibold text-base md:text-xl text-gray-800">
             {product.title}
           </h3>
