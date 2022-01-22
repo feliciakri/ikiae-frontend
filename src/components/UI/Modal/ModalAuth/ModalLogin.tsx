@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ModalAuth from "./ModalAuth";
 import ModalWrapper from "./ModalWrapper";
 import { ReactComponent as IconMenu } from "../../../assets/logo/IKIAE-Logo.svg";
 import InputField from "../../Input/InputField";
+import axios from "axios";
 
 interface Props {
   showModalLog: boolean;
@@ -21,6 +22,7 @@ const ModalLogin: React.FC<Props> = ({
   setShowModalLog,
   setShowModalReg,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -34,7 +36,18 @@ const ModalLogin: React.FC<Props> = ({
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // Send input login to backend
-    console.log(data);
+    // axios
+    //   .post(`${process.env.REACT_APP_API_KEY}/login`, {
+    //     data,
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //     setIsLoading(true);
+    //     setTimeout(() => {
+    //     setIsLoading(false);
+    //       setShowModalLog(false);
+    //     }, 1000);
+    //   });
   };
   return (
     <ModalAuth isShow={showModalLog} onClose={setShowModalLog}>
@@ -45,6 +58,13 @@ const ModalLogin: React.FC<Props> = ({
             Sign in to your account
           </h1>
         </div>
+        <h1
+          className={`${
+            isLoading ? "relative" : "hidden"
+          } bg-blue-400 text-white text-center py-2 uppercase`}
+        >
+          Succes
+        </h1>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">
             <label>Email Address</label>
