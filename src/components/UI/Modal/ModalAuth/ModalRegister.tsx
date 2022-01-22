@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ModalAuth from "./ModalAuth";
 import ModalWrapper from "./ModalWrapper";
 import InputField from "../../Input/InputField";
 import { ReactComponent as IconMenu } from "../../../assets/logo/IKIAE-Logo.svg";
-import { Link } from "react-router-dom";
 
 interface Props {
   showModalReg: boolean;
@@ -23,6 +24,7 @@ const ModalRegister: React.FC<Props> = ({
   setShowModalReg,
   setShowModalLog,
 }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -36,8 +38,18 @@ const ModalRegister: React.FC<Props> = ({
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     // Send Input Register to Backend
-    console.log(data);
-    window.location.reload();
+    // axios
+    //   .post(`${process.env.REACT_APP_API_KEY}/users`, {
+    //     data,
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //     setIsLoading(true);
+    //     setTimeout(() => {
+    //       setIsLoading(false);
+    //       window.location.reload();
+    //     }, 1000);
+    //   });
   };
   return (
     <ModalAuth isShow={showModalReg} onClose={setShowModalReg}>
@@ -54,6 +66,13 @@ const ModalRegister: React.FC<Props> = ({
             </h2>
           </div>
         </div>
+        <h1
+          className={`${
+            isLoading ? "relative" : "hidden"
+          } bg-blue-400 text-white text-center py-2 uppercase`}
+        >
+          Succes
+        </h1>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">
             <label>Name</label>
