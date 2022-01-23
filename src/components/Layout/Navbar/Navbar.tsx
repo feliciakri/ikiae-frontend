@@ -32,7 +32,7 @@ const Navbar = () => {
             {/* Logic Auth */}
             {/*<ButtonSignIn />*/}
             <ButtonSignIn isModal={() => setShowModalLog(true)} />
-            <ProfileDropdown />
+            {/* <ProfileDropdown /> */}
             <span className="border border-gray-200 h-full"></span>
             <div className="flex flex-rol items-center space-x-2 md:space-x-3">
               <ShoppingCartIcon className="text-gray-400 w-5 h-5 md:w-6 md:h-6" />
