@@ -6,7 +6,7 @@ interface Props {
   children: any;
   onClose: (arg: boolean) => void;
 }
-const Modal: React.FC<Props> = ({ isShow, children, onClose }) => {
+const ModalAuth: React.FC<Props> = ({ isShow, children, onClose }) => {
   const ModalOverlay = () => {
     return (
       <div
@@ -28,4 +28,4 @@ const Modal: React.FC<Props> = ({ isShow, children, onClose }) => {
   );
 };
 
-export default Modal;
+export default ModalAuth;
