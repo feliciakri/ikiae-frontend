@@ -41,7 +41,7 @@ const products = [
 	// More products...
 ];
 
-export default function Checkout() {
+const Checkout: React.FC = () => {
 	return (
 		<div className="bg-white">
 			{/* Background color split screen for large screens */}
@@ -298,4 +298,6 @@ export default function Checkout() {
 			</div>
 		</div>
 	);
-}
+};
+
+export default Checkout;
