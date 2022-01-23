@@ -11,7 +11,7 @@ const Table: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen py-5">
+    <div className="min-h-screen py-5 font-inter">
       <div className="overflow-x-auto w-full">
         <table className="mx-auto w-full rounded-lg bg-white overflow-hidden">
           <thead className="bg-gray-300">
