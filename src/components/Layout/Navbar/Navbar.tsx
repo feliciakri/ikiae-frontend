@@ -5,7 +5,7 @@ import SearhButton from "../../UI/Button/SearchButton";
 import ProfileDropdown from "../../UI/Dropdown/ProfileDropdown";
 import ModalLogin from "../../UI/Modal/ModalAuth/ModalLogin";
 import ModalRegister from "../../UI/Modal/ModalAuth/ModalRegister";
-import Cart from "../../Cart/Cart";
+import CartSidebar from "../../Cart/CartSidebar";
 const Navbar = () => {
 	const [showModalLog, setShowModalLog] = useState<boolean>(false);
 	const [showModalReg, setShowModalReg] = useState<boolean>(false);
@@ -35,7 +35,7 @@ const Navbar = () => {
 						<ProfileDropdown />
 						<span className="border border-gray-200 h-full"></span>
 						<div className="flex flex-rol items-center space-x-2 md:space-x-3">
-							<Cart />
+							<CartSidebar />
 							<span>0</span>
 						</div>
 					</div>
