@@ -14,26 +14,24 @@ const Product: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_KEY}/${slug}`)
+      .get(`${process.env.REACT_APP_API_KEY}/products/${slug}`)
       .then((response) => setIsProduct(response.data));
   }, [slug]);
 
   const addCartHandler = () => {
-    // Send data product to Backend
-    // const product = {
-    //   id: isProduct?.id,
-    //   name: isProduct?.title,
-    //   price: isProduct?.price,
-    //   qty: 1,
-    // };
-    // axios
-    //   .post(`${process.env.REACT_APP_API_KEY}`, product)
-    //   .then((response) => {
-    //     setIsAdded(true);
-    //     setTimeout(() => {
-    //       setIsAdded(false);
-    //     }, 500);
-    //   });
+    const product = {
+      product_id: isProduct?.id,
+      qty: 1,
+    };
+    axios
+      .post(`${process.env.REACT_APP_API_KEY}/carts`, product)
+      .then((response) => {
+        console.log(response);
+        setIsAdded(true);
+        setTimeout(() => {
+          setIsAdded(false);
+        }, 500);
+      });
   };
   return (
     <Layout>

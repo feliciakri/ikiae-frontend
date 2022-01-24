@@ -6,6 +6,10 @@ function classNames(...classes: any) {
 }
 
 export default function ProfileDropdown() {
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
   return (
     <Menu as="div" className="relative inline-block text-left ">
       <div>
@@ -43,7 +47,7 @@ export default function ProfileDropdown() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="/order"
+                    href="/checkout"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
@@ -56,7 +60,7 @@ export default function ProfileDropdown() {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="/sell"
+                    href="/dashboard/product"
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
@@ -73,6 +77,7 @@ export default function ProfileDropdown() {
                 {({ active }) => (
                   <button
                     type="submit"
+                    onClick={logoutHandler}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block w-full text-left px-4 py-2 text-sm"

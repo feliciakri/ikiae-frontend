@@ -10,7 +10,7 @@ const ModalAuth: React.FC<Props> = ({ isShow, children, onClose }) => {
   const ModalOverlay = () => {
     return (
       <div
-        className={`w-1/3 fixed inset-0 flex justify-center items-center mx-auto z-50`}
+        className={` md:w-1/3 fixed inset-0 flex justify-center items-center mx-auto z-50`}
       >
         {children}
       </div>

@@ -1,12 +1,15 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import { ReactComponent as IconMenu } from "../../assets/logo/IKIAE-Logo.svg";
 import ButtonSignIn from "../../UI/Button/ButtonSignIn";
 import SearhButton from "../../UI/Button/SearchButton";
 import ProfileDropdown from "../../UI/Dropdown/ProfileDropdown";
-import { ShoppingCartIcon } from "@heroicons/react/outline";
 import ModalLogin from "../../UI/Modal/ModalAuth/ModalLogin";
 import ModalRegister from "../../UI/Modal/ModalAuth/ModalRegister";
-const Navbar = () => {
+import CartSidebar from "../../Cart/CartSidebar";
+import { AuthContext } from "../../../context/AuthContext";
+const Navbar: React.FC = () => {
+  const { state } = useContext(AuthContext);
+  const { isLogged } = state;
   const [showModalLog, setShowModalLog] = useState<boolean>(false);
   const [showModalReg, setShowModalReg] = useState<boolean>(false);
 
@@ -29,13 +32,15 @@ const Navbar = () => {
         <SearhButton />
         <div className="w-1/2 md:w-1/3 flex justify-end">
           <div className="flex justify-between items-center space-x-3 md:space-x-6">
-            {/* Logic Auth */}
-            {/*<ButtonSignIn />*/}
-            <ButtonSignIn isModal={() => setShowModalLog(true)} />
-            {/* <ProfileDropdown /> */}
+            {isLogged ? (
+              <ProfileDropdown />
+            ) : (
+              <ButtonSignIn isModal={() => setShowModalLog(true)} />
+            )}
+
             <span className="border border-gray-200 h-full"></span>
             <div className="flex flex-rol items-center space-x-2 md:space-x-3">
-              <ShoppingCartIcon className="text-gray-400 w-5 h-5 md:w-6 md:h-6" />
+              <CartSidebar />
               <span>0</span>
             </div>
           </div>
