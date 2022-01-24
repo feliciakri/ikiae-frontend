@@ -4,7 +4,6 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ['"Inter"'],
-        poppins: ['"Poppins"'],
       },
     },
   },
