@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { DotsVerticalIcon } from "@heroicons/react/outline";
 import { CheckCircleIcon } from "@heroicons/react/solid";
 import cn from "classnames";
