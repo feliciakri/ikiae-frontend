@@ -4,6 +4,7 @@ import Homepage from "../pages/homepage";
 import Product from "../pages/product";
 import DashboardProduct from "../pages/Dashboard/Product";
 import Checkout from "../pages/checkout";
+import OrderHistory from "../components/MyOrders/OrderHistory";
 
 const Router: React.FC = (props: any) => {
 	return (
@@ -16,6 +17,7 @@ const Router: React.FC = (props: any) => {
 					element={<DashboardProduct />}
 				/>
 				<Route path="checkout" element={<Checkout />} />
+				<Route path="orders" element={<OrderHistory />} />
 			</Routes>
 		</BrowserRouter>
 	);
