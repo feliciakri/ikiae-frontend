@@ -11,7 +11,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({ onFilter }: any) => {
   const { state } = useContext(AuthContext);
   const { isLogged } = state;
   const [isCart, setIsCart] = useState<Array<any>>();
@@ -83,6 +83,7 @@ const Navbar = () => {
                         />
                       </div>
                       <input
+                        onChange={(e) => onFilter(e.target.value)}
                         id="search"
                         name="search"
                         className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
