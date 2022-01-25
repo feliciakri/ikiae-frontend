@@ -54,6 +54,8 @@ const Counter: React.FC<CounterProps> = ({
 			</button>
 		</div>
 	);
+
+
 };
 
 export default Counter;

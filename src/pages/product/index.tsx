@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Layout from "../../components/Layout/Layout";
@@ -6,35 +6,67 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { CheckIcon } from "@heroicons/react/outline";
+import { AuthContext } from "../../context/AuthContext";
 
 const Product: React.FC = () => {
   const [isProduct, setIsProduct] = useState<Record<string, any>>();
   const [isAdded, setIsAdded] = useState(false);
   const { slug } = useParams();
+  const { state } = useContext(AuthContext);
+  const { isLogged } = state;
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_KEY}/${slug}`)
+      .get(`${process.env.REACT_APP_API_KEY}/products/${slug}`)
       .then((response) => setIsProduct(response.data));
   }, [slug]);
 
   const addCartHandler = () => {
-    // Send data product to Backend
-    // const product = {
-    //   id: isProduct?.id,
-    //   name: isProduct?.title,
-    //   price: isProduct?.price,
-    //   qty: 1,
-    // };
+    const product = {
+      product_id: isProduct?.id,
+      quantity: 1,
+    };
+    axios
+      .all([
+        axios.post(`${process.env.REACT_APP_API_KEY}/carts`, product, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.token}`,
+          },
+        }),
+
+        axios.get(`${process.env.REACT_APP_API_KEY}/carts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.token}`,
+          },
+        }),
+      ])
+      .then(
+        axios.spread((dataOne, dataTwo) => {
+          console.log(dataOne, dataTwo);
+          setIsAdded(true);
+          setTimeout(() => {
+            setIsAdded(false);
+          }, 500);
+        })
+      );
     // axios
-    //   .post(`${process.env.REACT_APP_API_KEY}`, product)
+    //   .post(`${process.env.REACT_APP_API_KEY}/carts`, product, {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${state.token}`,
+    //     },
+    //   })
     //   .then((response) => {
+    //     console.log(response);
     //     setIsAdded(true);
     //     setTimeout(() => {
     //       setIsAdded(false);
     //     }, 500);
     //   });
   };
+
   return (
     <Layout>
       <div className="flex flex-col sm:flex-row">
@@ -47,14 +79,14 @@ const Product: React.FC = () => {
           </Link>
           <img
             className="object-cover h-full w-full rounded"
-            src={isProduct?.image}
+            src={isProduct?.image || "/logo192.png"}
             alt="product"
           />
         </div>
         <div className="sm:w-3/5 sm:px-20 my-20 sm:my-0 font-inter ">
           <div className="space-y-3">
             <h1 className="font-bold text-3xl">{isProduct?.title}</h1>
-            <h2 className="text-2xl">${isProduct?.price}</h2>
+            <h2 className="text-2xl">RP {isProduct?.price}</h2>
             <p className="text-justify">{isProduct?.description}</p>
           </div>
           <div className="flex flex-col mt-10 space-y-8">
@@ -62,14 +94,24 @@ const Product: React.FC = () => {
               <CheckIcon className="w-5 h-5 text-green-400" />
               <h2> in stock and ready to ship</h2>
             </div>
-            <button
-              className={`${
-                isAdded ? "bg-green-400" : "bg-blue-400"
-              } text-white py-2 rounded`}
-              onClick={addCartHandler}
-            >
-              {isAdded ? "Added ✓" : "Add to cart"}
-            </button>
+
+            {isLogged ? (
+              <button
+                className={`${
+                  isAdded ? "bg-green-400" : "bg-blue-400"
+                } text-white py-2 rounded`}
+                onClick={addCartHandler}
+              >
+                {isAdded ? "Added ✓" : "Add to cart"}
+              </button>
+            ) : (
+              <button
+                className="bg-gray-500
+                 text-white py-2 rounded"
+              >
+                You must to login!
+              </button>
+            )}
           </div>
         </div>
       </div>

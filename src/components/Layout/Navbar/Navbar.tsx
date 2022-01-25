@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { ReactComponent as IconMenu } from "../../assets/logo/IKIAE-Logo.svg";
 import ButtonSignIn from "../../UI/Button/ButtonSignIn";
 import ProfileDropdown from "../../UI/Dropdown/ProfileDropdown";
@@ -8,9 +8,35 @@ import CartSidebar from "../../Cart/CartSidebar";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { SearchIcon } from "@heroicons/react/solid";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
+
+
 const Navbar = () => {
-	const [showModalLog, setShowModalLog] = useState<boolean>(false);
-	const [showModalReg, setShowModalReg] = useState<boolean>(false);
+  const { state } = useContext(AuthContext);
+  const { isLogged } = state;
+  const [isCart, setIsCart] = useState<Array<any>>();
+  const [showModalLog, setShowModalLog] = useState<boolean>(false);
+  const [showModalReg, setShowModalReg] = useState<boolean>(false);
+        
+          // let total = isCarts?.reduce((res, item): any => {
+  //   return res + item.price * item.quantity;
+  // }, 0);
+  // console.log(total);
+
+   useEffect(() => {
+    if (isLogged) {
+      axios
+        .get(`${process.env.REACT_APP_API_KEY}/carts`, {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        })
+        .then((res) => {
+          setIsCart(res.data || []);
+        });
+    }
+  }, [isLogged, state.token]);
 
 	const user = {
 		name: "Tom Cook",
@@ -174,6 +200,3 @@ const Navbar = () => {
 			</Disclosure>
 		</Fragment>
 	);
-};
-
-export default Navbar;

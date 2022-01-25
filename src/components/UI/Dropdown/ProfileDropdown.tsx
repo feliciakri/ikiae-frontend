@@ -1,10 +1,22 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/outline";
+import { AuthContext } from "../../../context/AuthContext";
+
 import cn from "classnames";
 
 export default function ProfileDropdown(props: any) {
 	const user = props.user;
+          
+    const { state } = useContext(AuthContext);
+  const { user } = state;
+
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
+  return (
 	return (
 		<Menu as="div" className="relative inline-block text-left ">
 			<div>
@@ -35,7 +47,7 @@ export default function ProfileDropdown(props: any) {
 									)}
 								>
 									Signed in as <br />
-									{user.email}
+									{state.user?.name}
 								</p>
 							)}
 						</Menu.Item>
@@ -95,4 +107,4 @@ export default function ProfileDropdown(props: any) {
 			</Transition>
 		</Menu>
 	);
-}
+
