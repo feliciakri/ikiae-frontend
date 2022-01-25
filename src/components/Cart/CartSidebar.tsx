@@ -164,3 +164,4 @@ export default function CartSidebar() {
       </Transition.Root>
     </>
   );
+}

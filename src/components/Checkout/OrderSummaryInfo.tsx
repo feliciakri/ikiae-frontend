@@ -3,7 +3,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 
 export const OrderSummaryInfo = (props: any) => {
- const subtotal = props.subtotal;
+  const subtotal = props.subtotal;
   const shipping = props.shipping;
   const total = props.total;
   return (
@@ -81,3 +81,4 @@ export const OrderSummaryInfo = (props: any) => {
       </Popover>
     </>
   );
+};
