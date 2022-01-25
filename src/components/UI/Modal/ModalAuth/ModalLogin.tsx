@@ -24,6 +24,8 @@ const ModalLogin: React.FC<Props> = ({
   setShowModalReg,
 }) => {
   const { state, dispatch } = useContext(AuthContext);
+  const { isLogged } = state;
+  console.log(isLogged);
   const {
     register,
     handleSubmit,
@@ -71,7 +73,7 @@ const ModalLogin: React.FC<Props> = ({
         </div>
         <h1
           className={`${
-            state.isLogged ? "relative" : "hidden"
+            isLogged ? "relative" : "hidden"
           } bg-blue-400 text-white text-center py-2 uppercase`}
         >
           Succes

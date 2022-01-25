@@ -17,7 +17,11 @@ const Navbar = () => {
   const [isCart, setIsCart] = useState<Array<any>>();
   const [showModalLog, setShowModalLog] = useState<boolean>(false);
   const [showModalReg, setShowModalReg] = useState<boolean>(false);
-
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
   // let total = isCarts?.reduce((res, item): any => {
   //   return res + item.price * item.quantity;
   // }, 0);
@@ -100,16 +104,14 @@ const Navbar = () => {
                   </Disclosure.Button>
                 </div>
                 <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                  {/* Profile dropdown */}
-
-                  {!isLogged && <ProfileDropdown user={user} />}
-                  {isLogged && (
+                  {isLogged && <ProfileDropdown user={user} />}
+                  {!isLogged && (
                     <ButtonSignIn isModal={() => setShowModalLog(true)} />
                   )}
                   <span className="border border-gray-100 h-full"></span>
                   <div className="flex flex-rol items-center space-x-2 md:space-x-3">
                     <CartSidebar />
-                    <span>0</span>
+                    <span>{isCart?.length || 0}</span>
                   </div>
                 </div>
               </div>
@@ -130,7 +132,7 @@ const Navbar = () => {
                             Signed in as
                           </div>
                           <div className="text-sm font-medium text-gray-500">
-                            {user.email}
+                            {state.user.email}
                           </div>
                         </div>
                       )}
@@ -162,12 +164,14 @@ const Navbar = () => {
                   >
                     Sell
                   </a>
-                  <a
-                    href="/logout"
-                    className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    Logout
-                  </a>
+                  {isLogged && (
+                    <button
+                      onClick={logoutHandler}
+                      className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                    >
+                      Logout
+                    </button>
+                  )}
                 </div>
               </div>
             </Disclosure.Panel>

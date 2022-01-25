@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Counter from "../UI/Counter";
 import axios from "axios";
+import { formatRupiah } from "../../hooks/useFormatIDR";
 //TODO change into static type checking
 
 export const CartItem = (props: any) => {
@@ -15,8 +16,8 @@ export const CartItem = (props: any) => {
     id,
   } = props.product;
   const { state } = useContext(AuthContext);
-  let subTotal = sub_total * quantity;
-
+  const subTotal = formatRupiah(sub_total * quantity);
+  const price = formatRupiah(product_price);
   const handleIncrement = () => {
     const product = {
       product_id: id,
@@ -78,7 +79,7 @@ export const CartItem = (props: any) => {
             </h3>
           </div>
           <div className="flex justify-between text-base font-poppins font-medium">
-            <p className="text-gray-900">{product_price}</p>
+            <p className="text-gray-900">{price}</p>
 
             <p className="ml-4 text-mint">{subTotal}</p>
           </div>

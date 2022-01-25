@@ -27,17 +27,17 @@ const Checkout: React.FC = () => {
   const { state } = useContext(AuthContext);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const address = {
-      street: 1,
+    const address_Order = {
+      street: data.address,
       city: data.city,
       state: data.province,
-      zip: data.postCode,
+      zip: Number(data.postCode),
     };
-    const credit_card = {
+    const credit_card_Order = {
       type: data.apartment,
       name: data.nameCard,
       number: data.CardNumber,
-      cvv: data.CVC,
+      cvv: Number(data.CVC),
       month: 1,
       year: 2012,
     };
@@ -46,12 +46,8 @@ const Checkout: React.FC = () => {
       .post(
         `${process.env.REACT_APP_API_KEY}/orders`,
         {
-          address: {
-            address,
-          },
-          credit_card: {
-            credit_card,
-          },
+          address: address_Order,
+          credit_card: credit_card_Order,
         },
         {
           headers: {
@@ -132,7 +128,6 @@ const Checkout: React.FC = () => {
             </ul>
             <OrderSummaryInfo
               subtotal={subTotal || 0}
-              shipping={"$20.00"}
               total={totalPrice || 0}
             />
           </div>
@@ -367,7 +362,6 @@ const Checkout: React.FC = () => {
       </div>
     </div>
   );
-
 };
 
 export default Checkout;

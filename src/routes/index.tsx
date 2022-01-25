@@ -5,8 +5,6 @@ import Product from "../pages/product";
 import DashboardProduct from "../pages/Dashboard/Product";
 import Checkout from "../pages/checkout";
 import OrderHistory from "../components/MyOrders/OrderHistory";
-
-
 import { AuthContext } from "../context/AuthContext";
 import NotFound from "../pages/notfound";
 import AddProduct from "../pages/Dashboard/AddProduct";
@@ -29,12 +27,11 @@ const Router: React.FC = (props: any) => {
             element={<AddProduct />}
           />
         )}
-          {isLogged && <Route path="orders" element={<OrderHistory />} />}
+        {isLogged && <Route path="orders" element={<OrderHistory />} />}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
-
 };
 
 export default Router;

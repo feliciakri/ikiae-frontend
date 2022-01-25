@@ -1,26 +1,55 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideBar from "../../../components/Layout/SideBar/SideBar";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import axios from "axios";
+import { AuthContext } from "../../../context/AuthContext";
 type Inputs = {
   category_id: number;
   image_link: string;
   name: string;
   description: string;
   price: number;
-  quantity: number;
 };
 
 const AddProduct: React.FC = ({ props }: any) => {
+  const { state } = useContext(AuthContext);
+  const { token } = state;
+  const [isCategory, setIsCategory] = useState<Array<any>>();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_KEY}/categories`)
+      .then((response) => setIsCategory(response.data));
+  }, []);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    axios
+      .post(
+        `${process.env.REACT_APP_API_KEY}/products`,
+        {
+          category_id: Number(data.category_id),
+          image: data.image_link,
+          name: data.name,
+          description: data.description,
+          price: Number(data.price),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      });
   };
+
   return (
     <SideBar>
       <div className="flex flex-col font-inter">
@@ -52,8 +81,11 @@ const AddProduct: React.FC = ({ props }: any) => {
               {...register("category_id", { required: true })}
               defaultValue="1"
             >
-              <option value="1">hello</option>
-              <option value="2">hello</option>
+              {isCategory?.map((category, i) => (
+                <option key={i} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
             {errors.category_id && (
               <p className="text-red-500">
@@ -105,17 +137,6 @@ const AddProduct: React.FC = ({ props }: any) => {
                 />
                 {errors.price && (
                   <p className="text-red-500">Please enter your price!</p>
-                )}
-              </div>
-              <div className="flex flex-col space-y-3">
-                <label>Quantity</label>
-                <input
-                  type="number"
-                  className="border py-1 rounded"
-                  {...register("quantity", { required: true })}
-                />
-                {errors.quantity && (
-                  <p className="text-red-500">Please enter your quantity!</p>
                 )}
               </div>
             </div>

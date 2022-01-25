@@ -7,7 +7,6 @@ import cn from "classnames";
 
 export default function ProfileDropdown(props: any) {
   const { state } = useContext(AuthContext);
-  const { user } = state;
 
   const logoutHandler = () => {
     localStorage.removeItem("token");
@@ -21,7 +20,6 @@ export default function ProfileDropdown(props: any) {
           <UserIcon className="text-gray-400 w-5 h-5 mx-4 md:w-6 md:h-6" />
         </Menu.Button>
       </div>
-
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
@@ -80,6 +78,7 @@ export default function ProfileDropdown(props: any) {
               <Menu.Item>
                 {({ active }) => (
                   <button
+                    onClick={logoutHandler}
                     type="submit"
                     className={cn(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",

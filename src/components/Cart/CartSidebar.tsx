@@ -6,6 +6,7 @@ import { CartItem } from "./CartItem";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import axios from "axios";
+import { formatRupiah } from "../../hooks/useFormatIDR";
 
 export default function CartSidebar() {
   const [open, setOpen] = useState(false);
@@ -41,9 +42,11 @@ export default function CartSidebar() {
     //router.push(ROUTES.CHECKOUT);
     setOpen(false);
   }
-  const totalPrice = isCartProduct
+  const isTotal = isCartProduct
     ?.map((product) => product.quantity * product.sub_total)
     .reduce((a, b) => a + b);
+
+  const totalPrice = formatRupiah(isTotal || 0);
 
   return (
     <>
@@ -127,19 +130,21 @@ export default function CartSidebar() {
                       <p className="mt-0.5 text-sm text-gray-500">
                         Shipping and taxes calculated at checkout.
                       </p>
-                      <Link to="/checkout">
-                        <button
-                          className="flex justify-between w-full h-10 mt-6 md:h-14 p-1 text-sm font-bold bg-bermuda rounded-full shadow-700 transition-colors focus:outline-none hover:bg-bermuda-600 focus:bg-bermuda-600"
-                          onClick={handleCheckout}
-                        >
-                          <span className="flex flex-1 items-center h-full px-5 text-white">
-                            Checkout
-                          </span>
-                          <span className="flex items-center flex-shrink-0 h-full bg-white text-bermuda rounded-full px-5">
-                            {totalPrice}
-                          </span>
-                        </button>
-                      </Link>
+                      {isCartProduct && (
+                        <Link to="/checkout">
+                          <button
+                            className="flex justify-between w-full h-10 mt-6 md:h-14 p-1 text-sm font-bold bg-bermuda rounded-full shadow-700 transition-colors focus:outline-none hover:bg-bermuda-600 focus:bg-bermuda-600"
+                            onClick={handleCheckout}
+                          >
+                            <span className="flex flex-1 items-center h-full px-5 text-white">
+                              Checkout
+                            </span>
+                            <span className="flex items-center flex-shrink-0 h-full bg-white text-bermuda rounded-full px-5">
+                              {totalPrice}
+                            </span>
+                          </button>
+                        </Link>
+                      )}
 
                       <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
                         <p>

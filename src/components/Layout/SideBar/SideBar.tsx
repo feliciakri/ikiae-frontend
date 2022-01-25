@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { ReactComponent as IconMenu } from "../../assets/logo/IKIAE-Logo.svg";
 import { TruckIcon, CubeIcon, MenuIcon } from "@heroicons/react/outline";
+import { AuthContext } from "../../../context/AuthContext";
 
 type Props = {
   children: React.ReactNode;
 };
 const SideBar: React.FC<Props> = ({ children }) => {
+  const { state } = useContext(AuthContext);
+  const { user } = state;
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const handleMobileMenu = () => {
     setIsMobile(!isMobile);
@@ -49,7 +52,7 @@ const SideBar: React.FC<Props> = ({ children }) => {
           <div className="font-inter">
             <h2>Logged in as </h2>
             {/* email user */}
-            <h2 className="font-bold">email</h2>
+            <h2 className="font-bold">{user?.email}</h2>
             <Link to="/">
               <button className="text-purple-700">Back shop to shop</button>
             </Link>

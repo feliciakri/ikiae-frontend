@@ -14,10 +14,10 @@ export const OrderSummaryInfo = (props: any) => {
           <dd>{subtotal}</dd>
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <dt className="text-gray-600">Shipping</dt>
           <dd>{shipping}</dd>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-between border-t border-gray-200 pt-6">
           <dt className="text-base">Total</dt>

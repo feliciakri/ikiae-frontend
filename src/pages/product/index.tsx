@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { CheckIcon } from "@heroicons/react/outline";
 import { AuthContext } from "../../context/AuthContext";
+import { formatRupiah } from "../../hooks/useFormatIDR";
 
 const Product: React.FC = () => {
   const [isProduct, setIsProduct] = useState<Record<string, any>>();
@@ -14,6 +15,7 @@ const Product: React.FC = () => {
   const { slug } = useParams();
   const { state } = useContext(AuthContext);
   const { isLogged } = state;
+  const price = formatRupiah(isProduct?.price);
 
   useEffect(() => {
     axios
@@ -86,7 +88,7 @@ const Product: React.FC = () => {
         <div className="sm:w-3/5 sm:px-20 my-20 sm:my-0 font-inter ">
           <div className="space-y-3">
             <h1 className="font-bold text-3xl">{isProduct?.title}</h1>
-            <h2 className="text-2xl">RP {isProduct?.price}</h2>
+            <h2 className="text-2xl"> {price}</h2>
             <p className="text-justify">{isProduct?.description}</p>
           </div>
           <div className="flex flex-col mt-10 space-y-8">
