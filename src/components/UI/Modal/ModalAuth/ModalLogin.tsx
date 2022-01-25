@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import axios, { AxiosResponse } from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { AuthContext } from "../../../../context/AuthContext";
 import ModalAuth from "./ModalAuth";
-import ModalWrapper from "./ModalWrapper";
 import { ReactComponent as IconMenu } from "../../../assets/logo/IKIAE-Logo.svg";
+import ModalWrapper from "./ModalWrapper";
 import InputField from "../../Input/InputField";
-import axios from "axios";
 
 interface Props {
   showModalLog: boolean;
@@ -22,7 +23,9 @@ const ModalLogin: React.FC<Props> = ({
   setShowModalLog,
   setShowModalReg,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { state, dispatch } = useContext(AuthContext);
+  const { isLogged } = state;
+  console.log(isLogged);
   const {
     register,
     handleSubmit,
@@ -34,33 +37,43 @@ const ModalLogin: React.FC<Props> = ({
     setShowModalLog(false);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // Send input login to backend
-    // axios
-    //   .post(`${process.env.REACT_APP_API_KEY}/login`, {
-    //     data,
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //     setIsLoading(true);
-    //     setTimeout(() => {
-    //     setIsLoading(false);
-    //       setShowModalLog(false);
-    //     }, 1000);
-    //   });
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    dispatch({ type: "LOGIN_START" });
+    axios
+      .post(`${process.env.REACT_APP_API_KEY_AUTH}/login`, data)
+      .then((res: AxiosResponse) => {
+        dispatch({ type: "LOGIN_SUCCES", payload: res.data });
+
+        localStorage.setItem(
+          "token",
+          JSON.stringify(res.data.token).slice(1, -1)
+        );
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: res.data.name,
+            email: res.data.email,
+          })
+        );
+      })
+      .catch((err) => console.log(err));
+    setTimeout(() => {
+      setShowModalLog(false);
+    }, 1000);
   };
   return (
     <ModalAuth isShow={showModalLog} onClose={setShowModalLog}>
       <ModalWrapper>
         <div className="flex flex-col items-center justify-center">
           <IconMenu />
-          <h1 className="font-poppins text-2xl tracking-wider my-6">
+          <h1 className="font-poppins text-2xl tracking-wider my-6 text-center">
             Sign in to your account
           </h1>
         </div>
         <h1
           className={`${
-            isLoading ? "relative" : "hidden"
+            isLogged ? "relative" : "hidden"
           } bg-blue-400 text-white text-center py-2 uppercase`}
         >
           Succes

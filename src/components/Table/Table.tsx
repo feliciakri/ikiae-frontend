@@ -6,7 +6,7 @@ const Table: React.FC = () => {
   const [isProduct, setIsProduct] = useState<Array<any>>([]);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_KEY}`)
+      .get(`${process.env.REACT_APP_API_KEY}/products`)
       .then((product) => setIsProduct(product.data));
   }, []);
 
@@ -36,8 +36,8 @@ const Table: React.FC = () => {
                 key={i}
                 id={product.id}
                 image={product.image}
-                name={product.title}
-                category={product.category}
+                name={product.name}
+                category={product.category_id}
                 quantity={product.price}
                 price={product.price}
                 // Hardcode delete product to change

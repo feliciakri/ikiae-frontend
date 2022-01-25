@@ -37,24 +37,22 @@ const ModalRegister: React.FC<Props> = ({
   };
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // Send Input Register to Backend
-    // axios
-    //   .post(`${process.env.REACT_APP_API_KEY}/users`, {
-    //     data,
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //     setIsLoading(true);
-    //     setTimeout(() => {
-    //       setIsLoading(false);
-    //       window.location.reload();
-    //     }, 1000);
-    //   });
+    axios
+      .post(`${process.env.REACT_APP_API_KEY_AUTH}/register`, data)
+      .then((data) => {
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+          setShowModalReg(false);
+          setShowModalLog(true);
+        }, 1000);
+      })
+      .catch((err) => alert("Something wrong..."));
   };
   return (
     <ModalAuth isShow={showModalReg} onClose={setShowModalReg}>
       <ModalWrapper>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center text-center">
           <IconMenu />
           <div className="flex flex-col items-center my-3 space-y-3">
             <h1 className="font-poppins text-2xl tracking-wider">
@@ -71,7 +69,7 @@ const ModalRegister: React.FC<Props> = ({
             isLoading ? "relative" : "hidden"
           } bg-blue-400 text-white text-center py-2 uppercase`}
         >
-          Succes
+          Registration successsful. Please Login
         </h1>
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col">
