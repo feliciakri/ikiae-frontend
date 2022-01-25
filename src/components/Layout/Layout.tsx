@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import Navbar from "./Navbar/Navbar";
 
-const Layout = ({ children }: any) => {
+const Layout = ({ onSearch, children }: any) => {
   return (
     <Fragment>
-      <Navbar />
+      <Navbar onFilter={onSearch} />
       <div className="my-8 mx-6">{children}</div>
     </Fragment>
   );
