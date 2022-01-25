@@ -38,7 +38,7 @@ const CardProduct = ({ product }: any) => {
 					<h3 className="font-semibold text-base md:text-xl text-gray-800">
 						{product.name}
 					</h3>
-					<p className="mt-4 text-base md:text-lg text-gray-600">
+					<p className="mt-4 text-base md:text-lg text-gray-600 line-clamp-3">
 						{product.description}
 					</p>
 				</Link>
