@@ -1,11 +1,15 @@
 //TODO change into static type checking
 
+import { formatRupiah } from "../../hooks/useFormatIDR";
+
 export const OrderSummaryProduct = (props: any) => {
   const product = props.product;
+
+  const price = formatRupiah(product.product_price);
   return (
     <li key={product.id} className="flex items-start py-6 space-x-4">
       <img
-        src={product.imageSrc || "/logo192.png"}
+        src={product.product_image || "/logo192.png"}
         alt={product.imageAlt}
         className="flex-none w-20 h-20 rounded-md object-center object-cover"
       />
@@ -15,7 +19,7 @@ export const OrderSummaryProduct = (props: any) => {
         <p className="text-gray-500">Qty {product.quantity}</p>
       </div>
       <div className="justify-between">
-        <p className="text-base font-medium">{product.product_price}</p>
+        <p className="text-base font-medium">{price}</p>
         <br />
         {/* TODO change to total */}
         <p className="text-base font-medium text-mint">{product.price}</p>

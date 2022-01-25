@@ -1,11 +1,12 @@
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
+import { formatRupiah } from "../../hooks/useFormatIDR";
 
 export const OrderSummaryInfo = (props: any) => {
-  const subtotal = props.subtotal;
+  const subtotal = formatRupiah(props.subtotal);
   const shipping = props.shipping;
-  const total = props.total;
+  const total = formatRupiah(props.total);
   return (
     <>
       <dl className="hidden text-sm font-medium text-gray-900 space-y-6 border-t border-gray-200 pt-6 lg:block">

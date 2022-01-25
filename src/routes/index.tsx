@@ -8,6 +8,7 @@ import OrderHistory from "../components/MyOrders/OrderHistory";
 import { AuthContext } from "../context/AuthContext";
 import NotFound from "../pages/notfound";
 import AddProduct from "../pages/Dashboard/AddProduct";
+import EditProduct from "../pages/Dashboard/EditProduct";
 const Router: React.FC = (props: any) => {
   const { state } = useContext(AuthContext);
   const { isLogged } = state;
@@ -25,6 +26,12 @@ const Router: React.FC = (props: any) => {
           <Route
             path="dashboard/product/add-product"
             element={<AddProduct />}
+          />
+        )}
+        {isLogged && (
+          <Route
+            path="dashboard/product/edit-product/:id"
+            element={<EditProduct />}
           />
         )}
         {isLogged && <Route path="orders" element={<OrderHistory />} />}
