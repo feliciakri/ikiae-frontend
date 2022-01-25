@@ -27,24 +27,24 @@ const Navbar = ({ onFilter }: any) => {
   // }, 0);
   // console.log(total);
 
-  useEffect(() => {
-    if (isLogged) {
-      axios
-        .get(`${process.env.REACT_APP_API_KEY}/carts`, {
-          headers: {
-            Authorization: `Bearer ${state.token}`,
-          },
-        })
-        .then((res) => {
-          setIsCart(res.data || []);
-        });
-    }
-  }, [isLogged, state.token]);
+	useEffect(() => {
+		if (isLogged) {
+			axios
+				.get(`${process.env.REACT_APP_API_KEY}/carts`, {
+					headers: {
+						Authorization: `Bearer ${state.token}`,
+					},
+				})
+				.then((res) => {
+					setIsCart(res.data || []);
+				});
+		}
+	}, [isLogged, state.token]);
 
-  const user = {
-    name: "Tom Cook",
-    email: "tom@example.com",
-  };
+	const user = {
+		name: "Tom Cook",
+		email: "tom@example.com",
+	};
 
   return (
     <Fragment>
@@ -118,69 +118,75 @@ const Navbar = ({ onFilter }: any) => {
               </div>
             </div>
 
-            <Disclosure.Panel
-              as="nav"
-              className="lg:hidden"
-              aria-label="Global"
-            >
-              <div className="border-t border-gray-200 pt-4 pb-3">
-                <div className="px-4 flex items-center">
-                  <div className="flex justify-evenly w-full">
-                    <div>
-                      {isLogged && (
-                        <div>
-                          <div className="text-base font-medium text-gray-800">
-                            Signed in as
-                          </div>
-                          <div className="text-sm font-medium text-gray-500">
-                            {state.user.email}
-                          </div>
-                        </div>
-                      )}
-                      {!isLogged && (
-                        <ButtonSignIn isModal={() => setShowModalLog(true)} />
-                      )}
-                    </div>
+						<Disclosure.Panel
+							as="nav"
+							className="lg:hidden"
+							aria-label="Global"
+						>
+							<div className="border-t border-gray-200 pt-4 pb-3">
+								<div className="px-4 flex items-center">
+									<div className="flex justify-evenly w-full">
+										<div>
+											{isLogged && (
+												<div>
+													<div className="text-base font-medium text-gray-800">
+														Signed in as
+													</div>
+													<div className="text-sm font-medium text-gray-500">
+														{state.user.email}
+													</div>
+												</div>
+											)}
+											{!isLogged && (
+												<ButtonSignIn
+													isModal={() =>
+														setShowModalLog(true)
+													}
+												/>
+											)}
+										</div>
 
-                    <button
-                      type="button"
-                      className="mr-4 ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <div className="h-6 w-6">
-                        <CartSidebar />
-                      </div>
-                    </button>
-                  </div>
-                </div>
-                <div className="mt-3 px-2 space-y-1">
-                  <a
-                    href="/orders"
-                    className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    My Orders
-                  </a>
-                  <a
-                    href="/sell"
-                    className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    Sell
-                  </a>
-                  {isLogged && (
-                    <button
-                      onClick={logoutHandler}
-                      className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      Logout
-                    </button>
-                  )}
-                </div>
-              </div>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-    </Fragment>
-  );
+										<button
+											type="button"
+											className="mr-4 ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+										>
+											<div className="h-6 w-6">
+												<CartSidebar />
+											</div>
+										</button>
+									</div>
+								</div>
+								{isLogged && (
+									<div className="mt-3 px-2 space-y-1">
+										<a
+											href="/orders"
+											className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+										>
+											My Orders
+										</a>
+										<a
+											href="/sell"
+											className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+										>
+											Sell
+										</a>
+										{isLogged && (
+											<button
+												onClick={logoutHandler}
+												className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+											>
+												Logout
+											</button>
+										)}
+									</div>
+								)}
+							</div>
+						</Disclosure.Panel>
+					</>
+				)}
+			</Disclosure>
+		</Fragment>
+	);
 };
 
 export default Navbar;
