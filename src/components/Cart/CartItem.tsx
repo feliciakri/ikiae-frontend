@@ -98,4 +98,3 @@ export const CartItem = (props: any) => {
       </div>
     </li>
   );
-};

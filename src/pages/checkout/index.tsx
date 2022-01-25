@@ -367,6 +367,7 @@ const Checkout: React.FC = () => {
       </div>
     </div>
   );
+
 };
 
 export default Checkout;

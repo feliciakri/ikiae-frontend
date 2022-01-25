@@ -1,7 +1,8 @@
 //TODO change into static type checking
 
 export const OrderSummaryProduct = (props: any) => {
-  const product = props.product;
+
+const product = props.product;
   return (
     <li key={product.id} className="flex items-start py-6 space-x-4">
       <img
@@ -22,4 +23,3 @@ export const OrderSummaryProduct = (props: any) => {
       </div>
     </li>
   );
-};
