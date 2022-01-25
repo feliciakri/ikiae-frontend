@@ -79,7 +79,10 @@ const TableBody: React.FC<ProductBody> = ({
           <button className="px-2 py-4 text-center">
             <TrashIcon className="w-5 h-5" onClick={handlerDeleteProduct} />
           </button>
-          <Link to="/dashboard/edit" className="hover:underline">
+          <Link
+            to={`/dashboard/product/edit-product/${id}`}
+            className="hover:underline"
+          >
             <PencilAltIcon className="w-5 h-5" />
           </Link>
         </td>
