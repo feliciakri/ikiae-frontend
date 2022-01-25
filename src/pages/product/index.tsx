@@ -87,7 +87,7 @@ const Product: React.FC = () => {
         </div>
         <div className="sm:w-3/5 sm:px-20 my-20 sm:my-0 font-inter ">
           <div className="space-y-3">
-            <h1 className="font-bold text-3xl">{isProduct?.title}</h1>
+            <h1 className="font-bold text-3xl">{isProduct?.name}</h1>
             <h2 className="text-2xl"> {price}</h2>
             <p className="text-justify">{isProduct?.description}</p>
           </div>
