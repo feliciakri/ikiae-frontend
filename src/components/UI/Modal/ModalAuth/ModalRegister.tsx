@@ -40,7 +40,6 @@ const ModalRegister: React.FC<Props> = ({
     axios
       .post(`${process.env.REACT_APP_API_KEY_AUTH}/register`, data)
       .then((data) => {
-        console.log(data);
         setIsLoading(true);
         setTimeout(() => {
           setIsLoading(false);

@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import ModalAuth from "./ModalAuth";
-import ModalWrapper from "./ModalWrapper";
-import { ReactComponent as IconMenu } from "../../../assets/logo/IKIAE-Logo.svg";
-import InputField from "../../Input/InputField";
+import React, { useContext } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { AuthContext } from "../../../../context/AuthContext";
+import ModalAuth from "./ModalAuth";
+import { ReactComponent as IconMenu } from "../../../assets/logo/IKIAE-Logo.svg";
+import ModalWrapper from "./ModalWrapper";
+import InputField from "../../Input/InputField";
 
 interface Props {
   showModalLog: boolean;
@@ -40,12 +40,22 @@ const ModalLogin: React.FC<Props> = ({
     axios
       .post(`${process.env.REACT_APP_API_KEY_AUTH}/login`, data)
       .then((res: AxiosResponse) => {
-        dispatch({ type: "LOGIN_SUCCES", payload: res.data.token });
-        localStorage.setItem("token", JSON.stringify(res.data.token));
-        console.log(res.data);
+        dispatch({ type: "LOGIN_SUCCES", payload: res.data });
+
+        localStorage.setItem(
+          "token",
+          JSON.stringify(res.data.token).slice(1, -1)
+        );
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: res.data.name,
+            email: res.data.email,
+          })
+        );
       })
       .catch((err) => console.log(err));
-
     setTimeout(() => {
       setShowModalLog(false);
     }, 1000);

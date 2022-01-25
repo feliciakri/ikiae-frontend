@@ -6,10 +6,11 @@ enum AuthActionKind {
 
 interface ActionProps {
   type: AuthActionKind;
-  payload: Object;
+  payload: any;
 }
 const AuthReducer = (state: any, action: ActionProps) => {
   const { type, payload } = action;
+
   switch (type) {
     case AuthActionKind.LOGIN_START: {
       return {
@@ -22,8 +23,11 @@ const AuthReducer = (state: any, action: ActionProps) => {
     }
     case AuthActionKind.LOGIN_SUCCES: {
       return {
-        token: payload,
-        user: null,
+        token: payload.token,
+        user: {
+          name: payload.name,
+          email: payload.email,
+        },
         isLogged: true,
         isFetching: false,
         error: false,

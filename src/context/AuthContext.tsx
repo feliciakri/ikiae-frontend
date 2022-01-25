@@ -1,18 +1,20 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useReducer } from "react";
 import AuthReducer from "./AuthReducer";
 
 export interface AuthContextInterface {
   token: string | null;
-  user: Object | null;
+  user: any | null;
   isLogged: boolean;
   isFetching: boolean;
   error: boolean;
 }
 const tokenInLocalStorage = localStorage.getItem("token");
-
+const userInLocalStorage: any = JSON.parse(
+  localStorage.getItem("user") || "{}"
+);
 const initialState = {
   token: null || tokenInLocalStorage,
-  user: null,
+  user: null || userInLocalStorage,
   isLogged: tokenInLocalStorage ? true : false,
   isFetching: false,
   error: false,

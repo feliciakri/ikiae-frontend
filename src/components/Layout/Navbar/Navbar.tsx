@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { ReactComponent as IconMenu } from "../../assets/logo/IKIAE-Logo.svg";
 import ButtonSignIn from "../../UI/Button/ButtonSignIn";
 import SearhButton from "../../UI/Button/SearchButton";
@@ -7,12 +7,33 @@ import ModalLogin from "../../UI/Modal/ModalAuth/ModalLogin";
 import ModalRegister from "../../UI/Modal/ModalAuth/ModalRegister";
 import CartSidebar from "../../Cart/CartSidebar";
 import { AuthContext } from "../../../context/AuthContext";
+import axios from "axios";
+
 const Navbar: React.FC = () => {
   const { state } = useContext(AuthContext);
   const { isLogged } = state;
+  const [isCart, setIsCart] = useState<Array<any>>();
   const [showModalLog, setShowModalLog] = useState<boolean>(false);
   const [showModalReg, setShowModalReg] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (isLogged) {
+      axios
+        .get(`${process.env.REACT_APP_API_KEY}/carts`, {
+          headers: {
+            Authorization: `Bearer ${state.token}`,
+          },
+        })
+        .then((res) => {
+          setIsCart(res.data || []);
+        });
+    }
+  }, [isLogged, state.token]);
+
+  // let total = isCarts?.reduce((res, item): any => {
+  //   return res + item.price * item.quantity;
+  // }, 0);
+  // console.log(total);
   return (
     <Fragment>
       <ModalLogin
@@ -41,11 +62,11 @@ const Navbar: React.FC = () => {
             <span className="border border-gray-200 h-full"></span>
             <div className="flex flex-rol items-center space-x-2 md:space-x-3">
               <CartSidebar />
-              <span>0</span>
+              <span>{isCart?.length}</span>
             </div>
           </div>
         </div>
-      </nav>{" "}
+      </nav>
     </Fragment>
   );
 };

@@ -1,48 +1,104 @@
 import { OrderSummaryProduct } from "../../components/Checkout/OrderSummaryProduct";
 import { OrderSummaryInfo } from "../../components/Checkout/OrderSummaryInfo";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
-const products = [
-  {
-    id: 1,
-    name: "Micro Backpack",
-    href: "#",
-    price: "$70.00",
-    color: "Moss",
-    quantity: 2,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg",
-    imageAlt:
-      "Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.",
-  },
-  {
-    id: 2,
-    name: "Throwback Hip Bag",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 3,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    color: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
+type Inputs = {
+  address: string;
+  apartment: string;
+  city: string;
+  province: string;
+  postCode: number;
+  nameCard: string;
+  CardNumber: string;
+  expiredDate: number;
+  CVC: number;
+};
 
 const Checkout: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const { state } = useContext(AuthContext);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const address = {
+      street: 1,
+      city: data.city,
+      state: data.province,
+      zip: data.postCode,
+    };
+    const credit_card = {
+      type: data.apartment,
+      name: data.nameCard,
+      number: data.CardNumber,
+      cvv: data.CVC,
+      month: 1,
+      year: 2012,
+    };
+
+    axios
+      .post(
+        `${process.env.REACT_APP_API_KEY}/orders`,
+        {
+          address: {
+            address,
+          },
+          credit_card: {
+            credit_card,
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
+  const [isCartProduct, setIsCartProduct] = useState<Array<any>>();
+  useEffect(() => {
+    if (state.token) {
+      axios
+        .get(`${process.env.REACT_APP_API_KEY}/carts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.token}`,
+          },
+        })
+        .then((response) => {
+          setIsCartProduct(response.data);
+        });
+    }
+    axios
+      .get(`${process.env.REACT_APP_API_KEY}/carts`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${state.token}`,
+        },
+      })
+      .then((response) => {
+        setIsCartProduct(response.data);
+      });
+  }, [state.token]);
+
+  const totalPrice = isCartProduct
+    ?.map((product) => product.quantity * product.sub_total)
+    .reduce((a, b) => a + b);
+
+  const subTotal = isCartProduct
+    ?.map((product) => product.sub_total)
+    .reduce((a, b) => a + b);
+
   return (
     <div className="bg-white">
       {/* Background color split screen for large screens */}
@@ -70,19 +126,22 @@ const Checkout: React.FC = () => {
               Order summary
             </h2>
             <ul className="text-sm font-medium text-gray-900 divide-y divide-gray-200">
-              {products.map((product) => (
-                <OrderSummaryProduct product={product} />
+              {isCartProduct?.map((product, i) => (
+                <OrderSummaryProduct key={i} product={product} />
               ))}
             </ul>
             <OrderSummaryInfo
-              subtotal={"$320.00"}
+              subtotal={subTotal || 0}
               shipping={"$20.00"}
-              total={"$340.00"}
+              total={totalPrice || 0}
             />
           </div>
         </section>
 
-        <form className="pt-16 pb-36 px-4 sm:px-6 lg:pb-16 lg:px-0 lg:row-start-1 lg:col-start-1">
+        <form
+          className="pt-16 pb-36 px-4 sm:px-6 lg:pb-16 lg:px-0 lg:row-start-1 lg:col-start-1"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="max-w-lg mx-auto lg:max-w-none">
             <section aria-labelledby="shipping-heading" className="mt-10">
               <h2
@@ -102,6 +161,7 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("address", { required: true })}
                       type="text"
                       id="address"
                       name="address"
@@ -120,6 +180,9 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("apartment", {
+                        required: true,
+                      })}
                       type="text"
                       id="apartment"
                       name="apartment"
@@ -137,6 +200,7 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("city", { required: true })}
                       type="text"
                       id="city"
                       name="city"
@@ -154,6 +218,7 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("province", { required: true })}
                       type="text"
                       id="province"
                       name="province"
@@ -171,10 +236,8 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
-                      type="text"
-                      id="postal-code"
-                      name="postal-code"
-                      autoComplete="postal-code"
+                      {...register("postCode", { required: true })}
+                      type="number"
                       className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -200,10 +263,8 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("nameCard", { required: true })}
                       type="text"
-                      id="name-on-card"
-                      name="name-on-card"
-                      autoComplete="cc-name"
                       className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -218,10 +279,8 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("CardNumber", { required: true })}
                       type="text"
-                      id="card-number"
-                      name="card-number"
-                      autoComplete="cc-number"
                       className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -236,10 +295,8 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
+                      {...register("expiredDate", { required: true })}
                       type="text"
-                      name="expiration-date"
-                      id="expiration-date"
-                      autoComplete="cc-exp"
                       className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -254,10 +311,8 @@ const Checkout: React.FC = () => {
                   </label>
                   <div className="mt-1">
                     <input
-                      type="text"
-                      name="cvc"
-                      id="cvc"
-                      autoComplete="csc"
+                      {...register("CVC", { required: true })}
+                      type="number"
                       className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
@@ -266,15 +321,32 @@ const Checkout: React.FC = () => {
             </section>
 
             <div className="mt-10 pt-6 border-t border-gray-200 sm:flex sm:items-center sm:justify-between">
-              <button
-                type="submit"
-                className="w-full bg-cobalt border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-cobalt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:ml-6 sm:order-last sm:w-auto"
-              >
-                Place order
-              </button>
-              <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
-                You won't be charged until the next step.
-              </p>
+              {isCartProduct ? (
+                <>
+                  <button
+                    type="submit"
+                    className="w-full bg-cobalt border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-cobalt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:ml-6 sm:order-last sm:w-auto"
+                  >
+                    Place order
+                  </button>
+                  <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
+                    You won't be charged until the next step.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/"
+                    type="submit"
+                    className="w-full bg-cobalt border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-cobalt-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:ml-6 sm:order-last sm:w-auto"
+                  >
+                    You must to buy something...
+                  </NavLink>
+                  <p className="mt-4 text-center text-sm text-gray-500 sm:mt-0 sm:text-left">
+                    You won't be charged until the next step.
+                  </p>
+                </>
+              )}
             </div>
             <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
               <p>

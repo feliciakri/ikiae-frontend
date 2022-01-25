@@ -1,13 +1,18 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/outline";
+import { AuthContext } from "../../../context/AuthContext";
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function ProfileDropdown() {
+  const { state } = useContext(AuthContext);
+  const { user } = state;
+
   const logoutHandler = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     window.location.reload();
   };
   return (
@@ -31,15 +36,14 @@ export default function ProfileDropdown() {
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="/users"
+                <div
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block px-4 py-2 text-sm"
                   )}
                 >
-                  Sign In as User
-                </a>
+                  Sign In as {user?.name}
+                </div>
               )}
             </Menu.Item>
             <hr className="w-5/6 mx-auto" />
