@@ -42,17 +42,30 @@ const Homepage: React.FC = () => {
 
 	const filterCategory = (curcat: any) => {
 		const id = curcat.id;
-		console.log(isProducts);
 		const newProducts = isProducts?.filter((newVal) => {
 			return newVal.category_id === id;
 		});
 		setFilteredSearchProducts(newProducts);
 	};
 
+	const allCategory = () => {
+		setFilteredSearchProducts(isProducts);
+	};
+
 	return (
 		<Layout onSearch={setSearch}>
 			<div className="flex flex-col sm:flex-row">
 				<div className="md:w-1/3 ">
+					<div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 px-5 gap-5 mb-2">
+						<button
+							className="bg-white py-2 px-1 flex flex-col items-center"
+							value={""}
+							onClick={() => allCategory()}
+						>
+							<p>All</p>
+						</button>
+					</div>
+
 					<div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 px-5 gap-5 mb-16">
 						{isCategories?.map((category, i) => (
 							<button
@@ -67,6 +80,7 @@ const Homepage: React.FC = () => {
 						))}
 					</div>
 				</div>
+
 				<div className="md:w-2/3">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 						{filteredSearchProducts?.map(
