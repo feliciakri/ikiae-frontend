@@ -1,4 +1,5 @@
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { formatRupiah } from "../../hooks/useFormatIDR";
 export default function Product(props: any) {
 	const product = props.product;
 	const order = props.order;
@@ -14,8 +15,10 @@ export default function Product(props: any) {
 				</div>
 				<div className="flex-1 ml-6 text-sm">
 					<div className="font-medium text-gray-900 sm:flex sm:justify-between">
-						<h5>{product.name}</h5>
-						<p className="mt-2 sm:mt-0">{product.price}</p>
+						<h5>{product.product_name}</h5>
+						<p className="mt-2 sm:mt-0">
+							{formatRupiah(product.product_price)}
+						</p>
 					</div>
 					<p className="hidden text-gray-500 sm:block sm:mt-2">
 						Qty: {product.quantity}
