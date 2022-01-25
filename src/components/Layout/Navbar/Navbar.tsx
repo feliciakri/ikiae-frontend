@@ -12,20 +12,20 @@ import { AuthContext } from "../../../context/AuthContext";
 import axios from "axios";
 
 const Navbar = ({ onFilter }: any) => {
-  const { state } = useContext(AuthContext);
-  const { isLogged } = state;
-  const [isCart, setIsCart] = useState<Array<any>>();
-  const [showModalLog, setShowModalLog] = useState<boolean>(false);
-  const [showModalReg, setShowModalReg] = useState<boolean>(false);
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.location.reload();
-  };
-  // let total = isCarts?.reduce((res, item): any => {
-  //   return res + item.price * item.quantity;
-  // }, 0);
-  // console.log(total);
+	const { state } = useContext(AuthContext);
+	const { isLogged } = state;
+	const [isCart, setIsCart] = useState<Array<any>>();
+	const [showModalLog, setShowModalLog] = useState<boolean>(false);
+	const [showModalReg, setShowModalReg] = useState<boolean>(false);
+	const logoutHandler = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("user");
+		window.location.reload();
+	};
+	// let total = isCarts?.reduce((res, item): any => {
+	//   return res + item.price * item.quantity;
+	// }, 0);
+	// console.log(total);
 
 	useEffect(() => {
 		if (isLogged) {
@@ -46,77 +46,96 @@ const Navbar = ({ onFilter }: any) => {
 		email: "tom@example.com",
 	};
 
-  return (
-    <Fragment>
-      <ModalLogin
-        showModalLog={showModalLog}
-        setShowModalLog={setShowModalLog}
-        setShowModalReg={setShowModalReg}
-      />
-      <ModalRegister
-        showModalReg={showModalReg}
-        setShowModalLog={setShowModalLog}
-        setShowModalReg={setShowModalReg}
-      />
-      <Disclosure as="header" className="bg-white shadow">
-        {({ open }) => (
-          <>
-            <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
-              <div className="relative h-16 flex justify-between">
-                <div className="relative z-10 px-2 flex lg:px-0">
-                  <div className="flex-shrink-0 flex items-center">
-                    <span className="w-1/3">
-                      <IconMenu width="10rem" />
-                    </span>
-                  </div>
-                </div>
-                <div className="relative z-0 flex-1 px-2 flex items-center justify-center sm:absolute sm:inset-0">
-                  <div className="w-full sm:max-w-xs">
-                    <label htmlFor="search" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                        <SearchIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <input
-                        onChange={(e) => onFilter(e.target.value)}
-                        id="search"
-                        name="search"
-                        className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        placeholder="Search"
-                        type="search"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="relative z-10 flex items-center lg:hidden">
-                  {/* Mobile menu button */}
-                  <Disclosure.Button className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                    <span className="sr-only">Open menu</span>
-                    {open ? (
-                      <XIcon className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Disclosure.Button>
-                </div>
-                <div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
-                  {isLogged && <ProfileDropdown user={user} />}
-                  {!isLogged && (
-                    <ButtonSignIn isModal={() => setShowModalLog(true)} />
-                  )}
-                  <span className="border border-gray-100 h-full"></span>
-                  <div className="flex flex-rol items-center space-x-2 md:space-x-3">
-                    <CartSidebar />
-                    <span>{isCart?.length || 0}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+	return (
+		<Fragment>
+			<ModalLogin
+				showModalLog={showModalLog}
+				setShowModalLog={setShowModalLog}
+				setShowModalReg={setShowModalReg}
+			/>
+			<ModalRegister
+				showModalReg={showModalReg}
+				setShowModalLog={setShowModalLog}
+				setShowModalReg={setShowModalReg}
+			/>
+			<Disclosure as="header" className="bg-white shadow">
+				{({ open }) => (
+					<>
+						<div className="max-w-7xl mx-auto px-2 sm:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
+							<div className="relative h-16 flex justify-between">
+								<div className="relative z-10 px-2 flex lg:px-0">
+									<div className="flex-shrink-0 flex items-center">
+										<span className="w-1/3">
+											<IconMenu width="10rem" />
+										</span>
+									</div>
+								</div>
+								<div className="relative z-0 flex-1 px-2 flex items-center justify-center sm:absolute sm:inset-0">
+									<div className="w-full sm:max-w-xs">
+										<label
+											htmlFor="search"
+											className="sr-only"
+										>
+											Search
+										</label>
+										<div className="relative">
+											<div className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
+												<SearchIcon
+													className="h-5 w-5 text-gray-400"
+													aria-hidden="true"
+												/>
+											</div>
+											<input
+												onChange={(e) =>
+													onFilter(e.target.value)
+												}
+												id="search"
+												name="search"
+												className="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+												placeholder="Search"
+												type="search"
+											/>
+										</div>
+									</div>
+								</div>
+								<div className="relative z-10 flex items-center lg:hidden">
+									{/* Mobile menu button */}
+									<Disclosure.Button className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+										<span className="sr-only">
+											Open menu
+										</span>
+										{open ? (
+											<XIcon
+												className="block h-6 w-6"
+												aria-hidden="true"
+											/>
+										) : (
+											<MenuIcon
+												className="block h-6 w-6"
+												aria-hidden="true"
+											/>
+										)}
+									</Disclosure.Button>
+								</div>
+								<div className="hidden lg:relative lg:z-10 lg:ml-4 lg:flex lg:items-center">
+									{isLogged && (
+										<ProfileDropdown user={user} />
+									)}
+									{!isLogged && (
+										<ButtonSignIn
+											isModal={() =>
+												setShowModalLog(true)
+											}
+										/>
+									)}
+									<span className="border border-gray-100 h-full"></span>
+									<div className="flex flex-rol items-center space-x-2 md:space-x-3">
+										<CartSidebar />
+										<span>{isCart?.length || 0}</span>
+									</div>
+								</div>
+							</div>
+						</div>
 
 						<Disclosure.Panel
 							as="nav"
@@ -165,7 +184,7 @@ const Navbar = ({ onFilter }: any) => {
 											My Orders
 										</a>
 										<a
-											href="/sell"
+											href="/dashboard/product"
 											className="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
 										>
 											Sell

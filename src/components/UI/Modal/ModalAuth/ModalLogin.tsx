@@ -97,7 +97,7 @@ const ModalLogin: React.FC<Props> = ({
 							type="password"
 							{...register("password", {
 								required: true,
-								minLength: 6,
+								minLength: 4,
 							})}
 						/>
 						{errors.password && (

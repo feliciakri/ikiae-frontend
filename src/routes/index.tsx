@@ -9,29 +9,32 @@ import { AuthContext } from "../context/AuthContext";
 import NotFound from "../pages/notfound";
 import AddProduct from "../pages/Dashboard/AddProduct";
 const Router: React.FC = (props: any) => {
-  const { state } = useContext(AuthContext);
-  const { isLogged } = state;
+	const { state } = useContext(AuthContext);
+	const { isLogged } = state;
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="product/:slug" element={<Product />} />{" "}
-        {isLogged && (
-          <Route path="dashboard/product" element={<DashboardProduct />} />
-        )}
-        {isLogged && <Route path="checkout" element={<Checkout />} />}
-        {isLogged && (
-          <Route
-            path="dashboard/product/add-product"
-            element={<AddProduct />}
-          />
-        )}
-        {isLogged && <Route path="orders" element={<OrderHistory />} />}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Homepage />} />
+				<Route path="product/:slug" element={<Product />} />{" "}
+				{isLogged && (
+					<Route
+						path="dashboard/product"
+						element={<DashboardProduct />}
+					/>
+				)}
+				{isLogged && <Route path="checkout" element={<Checkout />} />}
+				{isLogged && (
+					<Route
+						path="dashboard/product/add-product"
+						element={<AddProduct />}
+					/>
+				)}
+				{isLogged && <Route path="orders" element={<OrderHistory />} />}
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+		</BrowserRouter>
+	);
 };
 
 export default Router;
