@@ -10,8 +10,8 @@ import NotFound from "../pages/notfound";
 import AddProduct from "../pages/Dashboard/AddProduct";
 import EditProduct from "../pages/Dashboard/EditProduct";
 const Router: React.FC = (props: any) => {
-  const { state } = useContext(AuthContext);
-  const { isLogged } = state;
+	const { state } = useContext(AuthContext);
+	const { isLogged } = state;
 
   return (
     <BrowserRouter>
